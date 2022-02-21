@@ -23,7 +23,6 @@ Fixed::Fixed( const int nb ) : _nb( nb << _fract )
 Fixed::Fixed( float const nb) : _nb( roundf(nb * (1 << this->_fract) ) )
 {
 	std::cout << "Float constructor called" << std::endl;
-	(void)nb;
 	return ;
 }
 
