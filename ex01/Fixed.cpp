@@ -1,4 +1,5 @@
 #include "Fixed.hpp"
+#include <cmath>
 
 Fixed::Fixed( void ) : _nb(0)
 {
@@ -13,17 +14,17 @@ Fixed::Fixed( Fixed const & src )
 	return ;
 }
 
-Fixed::Fixed( int nb )
+Fixed::Fixed( const int nb ) : _nb( nb << _fract )
 {
 	std::cout << "Int constructor called" << std::endl;
-	this->_nb = nb;
 	return ;
 }
 
-Fixed::Fixed( float const nb)
+Fixed::Fixed( float const nb) : _nb( roundf(nb * (1 << this->_fract) ) )
 {
 	std::cout << "Float constructor called" << std::endl;
 	(void)nb;
+	return ;
 }
 
 Fixed::~Fixed( void )
@@ -48,15 +49,12 @@ void	Fixed::setRawBits( int const raw )
 
 float	Fixed::toFloat( void ) const
 {
-	float	ret;
-
-	ret = (float)getRawBits();
-	return (ret);
+	return (float)this->_nb / (1 << this->_fract);
 }
 
 int		Fixed::toInt( void ) const
 {
-	return (getRawBits());
+	return (this->_nb >> _fract);
 }
 
 
