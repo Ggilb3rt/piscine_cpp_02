@@ -12,7 +12,7 @@ class Fixed
 
 		Fixed( void );
 		Fixed( Fixed const & src );
-		Fixed( int nb );
+		Fixed( int const nb );
 		Fixed( float const nb );
 		~Fixed( void );
 

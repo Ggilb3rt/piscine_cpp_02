@@ -12,7 +12,7 @@ Fixed::Fixed( Fixed const & src )
 	return ;
 }
 
-Fixed::Fixed( const int nb ) : _nb( nb << _fract )
+Fixed::Fixed( int const nb ) : _nb( nb * (1 << this->_fract))
 {
 	return ;
 }
@@ -36,9 +36,7 @@ int		Fixed::getRawBits( void ) const
 
 void	Fixed::setRawBits( int const raw )
 {
-	if (raw)
-		this->_nb = raw;
-	return ;
+	this->_nb = raw;
 }
 
 
@@ -50,7 +48,7 @@ float	Fixed::toFloat( void ) const
 
 int		Fixed::toInt( void ) const
 {
-	return (this->_nb >> _fract);
+	return (this->_nb / (1 << _fract));
 }
 
 
@@ -64,12 +62,18 @@ Fixed &	Fixed::operator=( Fixed const & rhs )
 }
 Fixed	Fixed::operator+( Fixed const & rhs ) const
 {
-	return Fixed( this->toFloat() + rhs.toFloat() );
+	Fixed	ret;
+
+	ret.setRawBits(this->_nb + rhs.getRawBits());
+	return ret;
 }
 
 Fixed	Fixed::operator-( Fixed const & rhs ) const
 {
-	return Fixed( this->toFloat() - rhs.toFloat() );
+	Fixed	ret;
+
+	ret.setRawBits(this->_nb - rhs.getRawBits());
+	return ret;
 }
 
 Fixed	Fixed::operator*( Fixed const & rhs ) const
@@ -79,38 +83,38 @@ Fixed	Fixed::operator*( Fixed const & rhs ) const
 
 Fixed	Fixed::operator/( Fixed const & rhs ) const
 {
-	return Fixed( this->toFloat() / rhs.toFloat() );
+	return Fixed( this->toFloat() / rhs.toFloat());
 }
 
 // Comparaison operators
 bool	Fixed::operator>( Fixed const & rhs ) const
 {
-	return (this->toFloat() > rhs.toFloat()) ? true : false;
+	return (this->getRawBits() > rhs.getRawBits()) ? true : false;
 }
 
 bool	Fixed::operator>=( Fixed const & rhs ) const
 {
-	return (this->toFloat() >= rhs.toFloat()) ? true : false;
+	return (this->getRawBits() >= rhs.getRawBits()) ? true : false;
 }
 
 bool	Fixed::operator<( Fixed const & rhs ) const
 {
-	return (this->toFloat() < rhs.toFloat()) ? true : false;
+	return (this->getRawBits() < rhs.getRawBits()) ? true : false;
 }
 
 bool	Fixed::operator<=( Fixed const & rhs ) const
 {
-	return (this->toFloat() <= rhs.toFloat()) ? true : false;
+	return (this->getRawBits() <= rhs.getRawBits()) ? true : false;
 }
 
 bool	Fixed::operator==( Fixed const & rhs ) const
 {
-	return (this->toFloat() == rhs.toFloat()) ? true : false;
+	return (this->getRawBits() == rhs.getRawBits()) ? true : false;
 }
 
 bool	Fixed::operator!=( Fixed const & rhs ) const
 {
-	return (this->toFloat() != rhs.toFloat()) ? true : false;
+	return (this->getRawBits() != rhs.getRawBits()) ? true : false;
 }
 
 // Increment/decrement operators
